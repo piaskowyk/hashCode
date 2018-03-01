@@ -10,18 +10,18 @@ public class Main
 
 	public static void main(String[] args) throws FileNotFoundException 
 	{
-		int allRows, allColumns, allVehicles, allRides, bonus, steps;
+		int allRows, allColumns, allCars, allRides, bonus, steps;
 		Scanner input = new Scanner(System.in);
 		System.out.print("Podaj nazwe pliku: ");
 		String nazwaPliku = input.next();
 		Scanner wczytaj = new Scanner(new File (nazwaPliku));
 		allRows = wczytaj.nextInt();
 		allColumns = wczytaj.nextInt();
-		allVehicles= wczytaj.nextInt();
+		allCars= wczytaj.nextInt();
 		allRides = wczytaj.nextInt();
 		Ride[] rides = new Ride[allRides];
-		Car[] cars = new Car[allVehicles];
-		for(int i=0; i< allVehicles; i++)
+		Car[] cars = new Car[allCars];
+		for(int i=0; i< allCars; i++)
 		{
 			cars[i]=new Car(0, 0);
 		}
@@ -39,9 +39,22 @@ public class Main
 		}
 		wczytaj.close();
 		input.close();
-		
-		
-		
+	
+		for(int i=0; i<steps; i++)
+		{
+			for(int c=0; c<allCars; c++)
+			{
+				if(cars[c].freeTime <= steps)
+				{
+					for(Ride r : rides)
+					{
+						if()
+					}
+					
+				}
+					
+			}
+		}
 		
 	}
 
