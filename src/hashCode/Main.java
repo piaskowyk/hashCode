@@ -44,16 +44,28 @@ public class Main
 		{
 			for(Car c : cars)
 			{
+				boolean tmp = false;
 				if(c.freeTime <= steps)
 				{
-					for(Ride r : rides)
+					for(int r=0; r<allRides; r++)
 					{
-						if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime)
+						if(Pnt.GetDistanceToPoint(c.position, rides[r].startPoint)-1 == rides[r].startTime-currentTime)
 						{
-							c.freeTime=r.startTime+r.distance;
-							r.
+							c.freeTime=rides[r].startTime+rides[r].distance;
+							rides[r].done = true;
+							c.rides.push(r);
+							tmp=true;
+							break;
 						}
 					}
+					if(tmp) continue;
+					Ride best = c.getDistanceToClosestRide(rides);
+					if(Pnt.GetDistanceToPoint(c.position, best.startPoint)-1 < best.startTime-currentTime &&
+							Pnt.GetDistanceToPoint(c.position, best.startPoint)+best.distance>best.endTime-currentTime)
+					{
+						
+					}
+					
 					
 				}
 					
