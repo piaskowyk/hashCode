@@ -56,8 +56,8 @@ public class Main
 						Ride maxRide=null;
 						for(Ride actualRide: rides)
 						{
-							tempRate= actualCar.rate(actualRide, currentTime, bonus, steps);
-							if(tempRate>maxRate) 
+							tempRate = actualCar.rate(actualRide, currentTime, bonus, steps);
+							if(maxRide==null || tempRate>maxRate || (tempRate==maxRate && actualRide.endTime-actualRide.distance>maxRide.endTime-maxRide.distance)) 
 								{
 									maxRate = tempRate;
 									maxRide = actualRide;
