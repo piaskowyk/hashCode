@@ -56,7 +56,7 @@ public class Main
 						{
 							for(Ride r: rides)
 							{
-								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime &&
+								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)+1 == r.startTime-currentTime &&
 										Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
 								{
 									c.freeTime=Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance;
@@ -71,7 +71,7 @@ public class Main
 							if(tmp) continue;
 							for(Ride r: rides)
 							{
-								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-2 == r.startTime-currentTime  &&
+								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)+2 == r.startTime-currentTime  &&
 										Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
 								{
 									c.freeTime=Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance;
@@ -86,7 +86,7 @@ public class Main
 							if(tmp) continue;
 							for(Ride r: rides)
 							{
-								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-3 == r.startTime-currentTime &&
+								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)+3 == r.startTime-currentTime &&
 										Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
 								{
 									c.freeTime=Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance;
