@@ -1,13 +1,13 @@
 package hashCode;
 
 import java.util.Stack;
+import java.util.Vector;
 
 public class Car {
 	public Pnt position = null; 
 	public int freeTime = 0;
-	public boolean free;
+	//public boolean free;
 	public Stack <Integer> rides = new Stack <Integer>();
-	public Vector<Integer> excluded = new Vector<Integer>();
 	
 	public Car(int x, int y) {
 		this.position.x = x;
@@ -19,8 +19,8 @@ public class Car {
 		this.position.y = y;
 	}
 	
-	public Ride getDistanceToClosestRide(Ride[] rides, Vector<Integer> excluded) {
-		Ride min = rides[0];
+	public Ride getDistanceToClosestRide(Vector<Ride> rides, Vector<Integer> excluded) {
+		Ride min = rides.get(0);
 		int minDist = min.distance;
 		int tmp = 0;
 		int how = rides.length;
@@ -29,20 +29,20 @@ public class Car {
 		for(int i=0; i<how; i++) {
 			
 			for(Integer x :  excluded) {
-				if(x == rides[i].id) continue;
+				if(x == rides.get(i).id) continue;
 			}
 			
 			
 			pointC.x = this.position.x;
 			pointC.y = this.position.y;
 			
-			pointR.x = rides[i].startPoint.x;
-			pointR.y = rides[i].startPoint.y;
+			pointR.x = rides.get(i).startPoint.x;
+			pointR.y = rides.get(i).startPoint.y;
 			
 			tmp = Pnt.GetDistanceToPoint(pointC, pointR);
-			if(tmp < minDist && rides[i].done==false) {
+			if(tmp < minDist) {
 				minDist = tmp;
-				min = rides[i];
+				min = rides.get(i);
 			}
 		}
 		return min;
