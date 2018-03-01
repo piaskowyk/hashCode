@@ -17,8 +17,6 @@ public class Main
 		{
 			int allRows, allColumns, allCars, allRides, bonus, steps, points =0;
 			Scanner input = new Scanner(System.in);
-			//System.out.print("Podaj nazwe pliku: ");
-			//String nazwaPliku = input.next();
 			Scanner wczytaj = new Scanner(new File (nazwaPliku+".in"));
 			allRows = wczytaj.nextInt();
 			allColumns = wczytaj.nextInt();
@@ -74,7 +72,7 @@ public class Main
 							{
 								for(Ride r: rides)
 								{
-									if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 > r.startTime-currentTime)
+									if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 > r.startTime-currentTime && Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance>r.endTime-currentTime)
 									{
 										c.freeTime=r.startTime+r.distance;
 										points+=r.distance+bonus;
@@ -93,7 +91,8 @@ public class Main
 										tmp2 = rides.get(tmp1);
 										tmp1++;
 									}
-									while(rides.size()>tmp1 && Pnt.GetDistanceToPoint(c.position, tmp2.startPoint)+tmp2.distance>tmp2.endTime-currentTime);
+									while(rides.size()>tmp1 && Pnt.GetDistanceToPoint(c.position, tmp2.startPoint)+tmp2.distance>tmp2.endTime-currentTime
+											&& Pnt.GetDistanceToPoint(c.position, tmp2.startPoint)>= tmp2.startTime-currentTime );
 									if(tmp1<rides.size())
 									{
 										c.freeTime=Pnt.GetDistanceToPoint(c.position, rides.get(0).startPoint)+rides.get(0).distance;
