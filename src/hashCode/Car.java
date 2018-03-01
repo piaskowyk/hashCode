@@ -3,18 +3,18 @@ package hashCode;
 import java.awt.Point;
 
 public class Car {
-	public Pnt positon = null; 
+	public Pnt position = null; 
 	public int freeTime = 0;
 	public boolean free;
 	
 	public Car(int x, int y) {
-		this.positon.x = x;
-		this.positon.y = y;
+		this.position.x = x;
+		this.position.y = y;
 	}
 	
 	public void setPosition(int x, int y) {
-		this.positon.x = x;
-		this.positon.y = y;
+		this.position.x = x;
+		this.position.y = y;
 	}
 	
 	public Ride getDistanceToClosestRide(Ride[] rides) {
@@ -25,8 +25,8 @@ public class Car {
 		Pnt pointR = null;
 		Pnt pointC = null;
 		for(int i=0; i<how; i++) {
-			pointC.x = this.positon.x;
-			pointC.y = this.positon.y;
+			pointC.x = this.position.x;
+			pointC.y = this.position.y;
 			
 			pointR.x = rides[i].startPoint.x;
 			pointR.y = rides[i].startPoint.y;
