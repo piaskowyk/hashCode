@@ -50,7 +50,7 @@ public class Main
 				for(Car c : cars)
 				{
 					boolean tmp = false;
-					if(c.freeTime <= steps)
+					if(c.freeTime <= currentTime)
 					{
 						for(Ride r: rides)
 						{
@@ -64,7 +64,7 @@ public class Main
 							}
 						}
 						if(tmp) continue;
-						Ride best = c.getDistanceToClosestRide(rides, c.exclusions);
+						Ride best = c.getDistanceToClosestRide(rides);
 						if(best == null)
 						{
 							for(Ride r: rides)
@@ -74,15 +74,21 @@ public class Main
 									c.freeTime=r.startTime+r.distance;
 									rides.remove(r);
 									c.rides.push(r.number);
-									tmp=true;
 									break;
 								}
+								
+							}
+							if(c.freeTime<=currentTime)
+							{
+								c.freeTime=Pnt.GetDistanceToPoint(c.position, rides.get(0).startPoint)+rides.get(0).distance;
+								rides.remove(rides.get(0));
+								c.rides.push(rides.get(0).number);
 							}
 						}
 						else if(Pnt.GetDistanceToPoint(c.position, best.startPoint)-1 > best.startTime-currentTime &&
-								Pnt.GetDistanceToPoint(c.position, best.startPoint)+best.distance>best.endTime-currentTime && )
+								Pnt.GetDistanceToPoint(c.position, best.startPoint)+best.distance>best.endTime-currentTime )
 						{
-							exclusions.add(best.number);
+							c.exclusions.add(best.number);
 							allCarsBusy = false;
 						}
 						
