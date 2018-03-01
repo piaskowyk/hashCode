@@ -12,108 +12,124 @@ public class Main
 
 	public static void main(String[] args) throws FileNotFoundException 
 	{
-		int allRows, allColumns, allCars, allRides, bonus, steps, points =0;
-		Scanner input = new Scanner(System.in);
-		System.out.print("Podaj nazwe pliku: ");
-		String nazwaPliku = input.next();
-		Scanner wczytaj = new Scanner(new File (nazwaPliku));
-		allRows = wczytaj.nextInt();
-		allColumns = wczytaj.nextInt();
-		allCars= wczytaj.nextInt();
-		allRides = wczytaj.nextInt();
-		Vector<Ride> rides = new Vector<Ride>();
-		Car[] cars = new Car[allCars];
-		for(int i=0; i< allCars; i++)
+		String[] NazwyPlikow = {"a","b","c","d","e"};
+		for(String nazwaPliku : NazwyPlikow)
 		{
-			cars[i]=new Car(0, 0);
-		}
-		bonus = wczytaj.nextInt();
-		steps = wczytaj.nextInt();
-		wczytaj.nextLine();
-		for(int i=0; i<allRides; i++)
-		{
-			Pnt start = new Pnt(wczytaj.nextInt(), wczytaj.nextInt());
-			Pnt end = new Pnt(wczytaj.nextInt(), wczytaj.nextInt());
-			int startTime = wczytaj.nextInt();
-			int endTime = wczytaj.nextInt();
-			rides.add(new Ride(start, end, startTime, endTime, i));
-			wczytaj.nextLine();
-		}
-		wczytaj.close();
-		input.close();
-	
-		for(int currentTime=0; currentTime<steps; currentTime++)
-		{
-			boolean allCarsBusy = false;
-			while(!allCarsBusy)
+			int allRows, allColumns, allCars, allRides, bonus, steps, points =0;
+			Scanner input = new Scanner(System.in);
+			//System.out.print("Podaj nazwe pliku: ");
+			//String nazwaPliku = input.next();
+			Scanner wczytaj = new Scanner(new File (nazwaPliku+".in"));
+			allRows = wczytaj.nextInt();
+			allColumns = wczytaj.nextInt();
+			allCars= wczytaj.nextInt();
+			allRides = wczytaj.nextInt();
+			Vector<Ride> rides = new Vector<Ride>();
+			Car[] cars = new Car[allCars];
+			for(int i=0; i< allCars; i++)
 			{
-				allCarsBusy = true;
-				for(Car c : cars)
+				cars[i]=new Car(0, 0);
+			}
+			bonus = wczytaj.nextInt();
+			steps = wczytaj.nextInt();
+			wczytaj.nextLine();
+			for(int i=0; i<allRides; i++)
+			{
+				Pnt start = new Pnt(wczytaj.nextInt(), wczytaj.nextInt());
+				Pnt end = new Pnt(wczytaj.nextInt(), wczytaj.nextInt());
+				int startTime = wczytaj.nextInt();
+				int endTime = wczytaj.nextInt();
+				rides.add(new Ride(start, end, startTime, endTime, i));
+				wczytaj.nextLine();
+			}
+			wczytaj.close();
+			input.close();
+		
+			for(int currentTime=0; currentTime<steps; currentTime++)
+			{
+				boolean allCarsBusy = false;
+				while(!allCarsBusy)
 				{
-					boolean tmp = false;
-					if(c.freeTime <= currentTime)
+					allCarsBusy = true;
+					for(Car c : cars)
 					{
-						for(Ride r: rides)
-						{
-							if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime)
-							{
-								c.freeTime=r.startTime+r.distance;
-								rides.remove(r);
-								c.rides.push(r.number);
-								points+=r.distance+bonus;
-								tmp=true;
-								break;
-							}
-						}
-						if(tmp) continue;
-						Ride best = c.getDistanceToClosestRide(rides);
-						if(best == null)
+						boolean tmp = false;
+						if(c.freeTime <= currentTime)
 						{
 							for(Ride r: rides)
 							{
-								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 > r.startTime-currentTime)
+								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime)
 								{
 									c.freeTime=r.startTime+r.distance;
 									rides.remove(r);
 									c.rides.push(r.number);
 									points+=r.distance+bonus;
+									tmp=true;
 									break;
 								}
-								
 							}
-							if(c.freeTime<=currentTime)
+							if(tmp) continue;
+							Ride best = c.getDistanceToClosestRide(rides);
+							if(best == null)
 							{
-								c.freeTime=Pnt.GetDistanceToPoint(c.position, rides.get(0).startPoint)+rides.get(0).distance;
-								rides.remove(rides.get(0));
-								points+=rides.get(0).distance+bonus;
-								c.rides.push(rides.get(0).number);
+								for(Ride r: rides)
+								{
+									if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 > r.startTime-currentTime)
+									{
+										c.freeTime=r.startTime+r.distance;
+										points+=r.distance+bonus;
+										rides.remove(r);
+										c.rides.push(r.number);
+										break;
+									}
+									
+								}
+								if(c.freeTime<=currentTime && rides.size()>0)
+								{
+									int tmp1=0;
+									Ride tmp2;
+									do
+									{
+										tmp2 = rides.get(tmp1);
+										tmp1++;
+									}
+									while(rides.size()>tmp1 && Pnt.GetDistanceToPoint(c.position, tmp2.startPoint)+tmp2.distance>tmp2.endTime-currentTime);
+									if(tmp1<rides.size())
+									{
+										c.freeTime=Pnt.GetDistanceToPoint(c.position, rides.get(0).startPoint)+rides.get(0).distance;
+										points+=rides.get(0).distance+bonus;
+										c.rides.push(rides.get(0).number);
+										rides.remove(rides.get(0));
+									}
+								}
 							}
+							else if(Pnt.GetDistanceToPoint(c.position, best.startPoint)-1 > best.startTime-currentTime &&
+									Pnt.GetDistanceToPoint(c.position, best.startPoint)+best.distance>best.endTime-currentTime )
+							{
+								c.excluded.add(best.number);
+								allCarsBusy = false;
+							}
+							
+							
 						}
-						else if(Pnt.GetDistanceToPoint(c.position, best.startPoint)-1 > best.startTime-currentTime &&
-								Pnt.GetDistanceToPoint(c.position, best.startPoint)+best.distance>best.endTime-currentTime )
-						{
-							c.excluded.add(best.number);
-							allCarsBusy = false;
-						}
-						
-						
+							
 					}
-						
 				}
-			}
 
+			}
+			System.out.println(points);
+			wypisz(cars, nazwaPliku);
 		}
-		System.out.println(points);
-		wypisz(cars);
+		
 	}
 
-	private static void wypisz(Car[] cars) throws FileNotFoundException
+	private static void wypisz(Car[] cars, String nazwaPliku) throws FileNotFoundException
 	{
-		PrintWriter writer = new PrintWriter(new File("output"));
+		PrintWriter writer = new PrintWriter(new File(nazwaPliku+".out"));
 		int i=0;
 		for (Car c : cars)
 		{
-			writer.print(i);
+			writer.print(c.rides.size());
 			for(Integer number : c.rides)
 			{
 				writer.print(" " + number);

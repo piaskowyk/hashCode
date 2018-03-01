@@ -4,7 +4,7 @@ import java.util.Stack;
 import java.util.Vector;
 
 public class Car {
-	public Pnt position = null; 
+	public Pnt position = new Pnt(); 
 	public int freeTime = 0;
 	//public boolean free;
 	public Stack <Integer> rides = new Stack <Integer>();
