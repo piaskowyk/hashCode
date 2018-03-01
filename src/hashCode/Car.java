@@ -20,6 +20,21 @@ public class Car {
 		this.position.y = y;
 	}
 	
+	public int rate(Ride ride, int currentTime, int bonus)
+	{
+		int dojazd = Math.max(Pnt.GetDistanceToPoint(this.position, ride.startPoint), ride.startTime-currentTime);
+		int rating = getPoints(ride, currentTime, bonus);
+		rating/=(dojazd+ride.distance);
+		return rating;
+	}
+	
+	public int getPoints(Ride ride, int currentTime, int bonus)
+	{
+		int points = ride.distance;
+		if(Pnt.GetDistanceToPoint(this.position, ride.startPoint) >= ride.startTime-currentTime) points+=bonus;
+		return points;
+	}
+	
 	public Ride getDistanceToClosestRide(Vector<Ride> rides) {
 		int how = rides.size();
 		int k = 0;
