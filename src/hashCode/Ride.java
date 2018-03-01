@@ -19,4 +19,5 @@ public class Ride {
 		this.endTime = endTime;
 	}
 	
+	
 }
