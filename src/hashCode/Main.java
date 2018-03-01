@@ -68,6 +68,7 @@ public class Main
 									break;
 								}
 							}
+							if(tmp) continue;
 							for(Ride r: rides)
 							{
 								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-2 == r.startTime-currentTime  &&
@@ -82,6 +83,7 @@ public class Main
 									break;
 								}
 							}
+							if(tmp) continue;
 							for(Ride r: rides)
 							{
 								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-3 == r.startTime-currentTime &&
