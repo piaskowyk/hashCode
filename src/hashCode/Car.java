@@ -8,6 +8,7 @@ public class Car {
 	public int freeTime = 0;
 	//public boolean free;
 	public Stack <Integer> rides = new Stack <Integer>();
+	public Vector<Integer> excluded = new Vector<Integer>();
 	
 	public Car(int x, int y) {
 		this.position.x = x;
@@ -19,13 +20,13 @@ public class Car {
 		this.position.y = y;
 	}
 	
-	public Ride getDistanceToClosestRide(Vector<Ride> rides, Vector<Integer> excluded) {
+	public Ride getDistanceToClosestRide(Vector<Ride> rides) {
 		int how = rides.size();
 		int k = 0;
 		Ride min = null;
 		
 		while(min == null && k<how) {//znajdz pierwsz¹ niewykluczon¹ przesy³kê
-			if(!isExcluded(rides.get(k), excluded)) {
+			if(!isExcluded(rides.get(k))) {
 				min = rides.get(k);
 			}
 			k++;
@@ -37,11 +38,11 @@ public class Car {
 		
 		int minDist = min.distance;
 		int tmp = 0;
-		Pnt pointR = null;
-		Pnt pointC = null;
+		Pnt pointR = new Pnt();
+		Pnt pointC = new Pnt();
 		for(int i=0; i<how; i++) {
 
-			if(isExcluded(rides.get(i), excluded)) continue;
+			if(isExcluded(rides.get(i))) continue;
 			
 			
 			pointC.x = this.position.x;
@@ -59,10 +60,10 @@ public class Car {
 		return min;
 	}
 	
-	public boolean isExcluded(Ride item, Vector<Integer> excluded) {
+	public boolean isExcluded(Ride item) {
 		boolean ok = true;
 		for(Integer x :  excluded) {
-			if(x == item.id) {
+			if(x == item.number) {
 				ok = false;
 				break;
 			}

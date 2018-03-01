@@ -88,7 +88,7 @@ public class Main
 						else if(Pnt.GetDistanceToPoint(c.position, best.startPoint)-1 > best.startTime-currentTime &&
 								Pnt.GetDistanceToPoint(c.position, best.startPoint)+best.distance>best.endTime-currentTime )
 						{
-							c.exclusions.add(best.number);
+							c.excluded.add(best.number);
 							allCarsBusy = false;
 						}
 						
