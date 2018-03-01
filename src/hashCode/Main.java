@@ -56,7 +56,10 @@ public class Main
 						{
 							for(Ride r: rides)
 							{
-								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime && Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
+								if((Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime ||
+										Pnt.GetDistanceToPoint(c.position, r.startPoint)-2 == r.startTime-currentTime ||
+										Pnt.GetDistanceToPoint(c.position, r.startPoint)-3 == r.startTime-currentTime) &&
+										Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
 								{
 									c.freeTime=r.startTime+r.distance;
 									rides.remove(r);
