@@ -1,9 +1,9 @@
 package hashCode;
 
-import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class Main
 {
@@ -19,7 +19,8 @@ public class Main
 		allColumns = wczytaj.nextInt();
 		allCars= wczytaj.nextInt();
 		allRides = wczytaj.nextInt();
-		Ride[] rides = new Ride[allRides];
+		//Ride[] rides = new Ride[allRides];
+		Vector<Ride> rides = new Vector<Ride>();
 		Car[] cars = new Car[allCars];
 		for(int i=0; i< allCars; i++)
 		{
@@ -34,7 +35,7 @@ public class Main
 			Pnt end = new Pnt(wczytaj.nextInt(), wczytaj.nextInt());
 			int startTime = wczytaj.nextInt();
 			int endTime = wczytaj.nextInt();
-			rides[i] = new Ride(start, end, startTime, endTime);
+			rides.add(new Ride(start, end, startTime, endTime, i));
 			wczytaj.nextLine();
 		}
 		wczytaj.close();
@@ -42,34 +43,55 @@ public class Main
 	
 		for(int currentTime=0; currentTime<steps; currentTime++)
 		{
-			for(Car c : cars)
+			boolean allCarsBusy = false;
+			while(!allCarsBusy)
 			{
-				boolean tmp = false;
-				if(c.freeTime <= steps)
+				allCarsBusy = true;
+				for(Car c : cars)
 				{
-					for(int r=0; r<allRides; r++)
+					boolean tmp = false;
+					if(c.freeTime <= steps)
 					{
-						if(Pnt.GetDistanceToPoint(c.position, rides[r].startPoint)-1 == rides[r].startTime-currentTime)
+						for(Ride r: rides)
 						{
-							c.freeTime=rides[r].startTime+rides[r].distance;
-							rides[r].done = true;
-							c.rides.push(r);
-							tmp=true;
-							break;
+							if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime)
+							{
+								c.freeTime=r.startTime+r.distance;
+								rides.remove(r);
+								c.rides.push(r.number);
+								tmp=true;
+								break;
+							}
 						}
-					}
-					if(tmp) continue;
-					Ride best = c.getDistanceToClosestRide(rides);
-					if(Pnt.GetDistanceToPoint(c.position, best.startPoint)-1 < best.startTime-currentTime &&
-							Pnt.GetDistanceToPoint(c.position, best.startPoint)+best.distance>best.endTime-currentTime)
-					{
+						if(tmp) continue;
+						Ride best = c.getDistanceToClosestRide(rides, c.exclusions);
+						if(best == null)
+						{
+							for(Ride r: rides)
+							{
+								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 > r.startTime-currentTime)
+								{
+									c.freeTime=r.startTime+r.distance;
+									rides.remove(r);
+									c.rides.push(r.number);
+									tmp=true;
+									break;
+								}
+							}
+						}
+						else if(Pnt.GetDistanceToPoint(c.position, best.startPoint)-1 > best.startTime-currentTime &&
+								Pnt.GetDistanceToPoint(c.position, best.startPoint)+best.distance>best.endTime-currentTime && )
+						{
+							exclusions.add(best.number);
+							allCarsBusy = false;
+						}
+						
 						
 					}
-					
-					
+						
 				}
-					
 			}
+
 		}
 		
 	}
