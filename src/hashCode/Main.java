@@ -30,8 +30,8 @@ public class Main
 		wczytaj.nextLine();
 		for(int i=0; i<allRides; i++)
 		{
-			Point start = new Point(wczytaj.nextInt(), wczytaj.nextInt());
-			Point end = new Point(wczytaj.nextInt(), wczytaj.nextInt());
+			Pnt start = new Pnt(wczytaj.nextInt(), wczytaj.nextInt());
+			Pnt end = new Pnt(wczytaj.nextInt(), wczytaj.nextInt());
 			int startTime = wczytaj.nextInt();
 			int endTime = wczytaj.nextInt();
 			rides[i] = new Ride(start, end, startTime, endTime);
@@ -44,7 +44,7 @@ public class Main
 		{
 			for(Car c : cars)
 			{
-				if(c.freeTour <= steps)
+				if(c.freeTime <= steps)
 				{
 					for(Ride r : rides)
 					{
