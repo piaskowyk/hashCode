@@ -20,17 +20,28 @@ public class Car {
 	}
 	
 	public Ride getDistanceToClosestRide(Vector<Ride> rides, Vector<Integer> excluded) {
-		Ride min = rides.get(0);
+		int how = rides.size();
+		int k = 0;
+		Ride min = null;
+		
+		while(min == null && k<how) {//znajdz pierwsz¹ niewykluczon¹ przesy³kê
+			if(!isExcluded(rides.get(k), excluded)) {
+				min = rides.get(k);
+			}
+			k++;
+		}
+		
+		if(min == null) {// jeœli wszystkie przesy³ki s¹ wykluczone return null
+			return null;
+		}
+		
 		int minDist = min.distance;
 		int tmp = 0;
-		int how = rides.length;
 		Pnt pointR = null;
 		Pnt pointC = null;
 		for(int i=0; i<how; i++) {
-			
-			for(Integer x :  excluded) {
-				if(x == rides.get(i).id) continue;
-			}
+
+			if(isExcluded(rides.get(i), excluded)) continue;
 			
 			
 			pointC.x = this.position.x;
@@ -46,5 +57,16 @@ public class Car {
 			}
 		}
 		return min;
+	}
+	
+	public boolean isExcluded(Ride item, Vector<Integer> excluded) {
+		boolean ok = true;
+		for(Integer x :  excluded) {
+			if(x == item.id) {
+				ok = false;
+				break;
+			}
+		}
+		return ok;
 	}
 }
