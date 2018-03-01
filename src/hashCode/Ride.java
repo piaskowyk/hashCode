@@ -8,7 +8,8 @@ public class Ride {
 	public Point startPoint;
 	public Point endPoint;
 	
-	public int getDistance() {
+	public int getDistance() 
+	{
 		return Math.abs(startPoint.x - endPoint.x) + Math.abs(startPoint.y-endPoint.y);
 	}
 	
