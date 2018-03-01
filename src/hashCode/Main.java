@@ -40,15 +40,18 @@ public class Main
 		wczytaj.close();
 		input.close();
 	
-		for(int i=0; i<steps; i++)
+		for(int currentTime=0; currentTime<steps; currentTime++)
 		{
-			for(int c=0; c<allCars; c++)
+			for(Car c : cars)
 			{
-				if(cars[c].freeTime <= steps)
+				if(c.freeTour <= steps)
 				{
 					for(Ride r : rides)
 					{
-						if()
+						if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime)
+						{
+							c.freeTour=r.startTime+r.distance;
+						}
 					}
 					
 				}
