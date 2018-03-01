@@ -75,7 +75,8 @@ public class Main
 									if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 > r.startTime-currentTime && Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
 									{
 										c.freeTime=r.startTime+r.distance;
-										points+=r.distance+bonus;
+										points+=r.distance;
+										if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime) points+=bonus;
 										rides.remove(r);
 										c.rides.push(r.number);
 										break;
@@ -95,10 +96,11 @@ public class Main
 											&& Pnt.GetDistanceToPoint(c.position, tmp2.startPoint)>= tmp2.startTime-currentTime );
 									if(tmp1<rides.size())
 									{
-										c.freeTime=Pnt.GetDistanceToPoint(c.position, rides.get(0).startPoint)+rides.get(0).distance;
-										points+=rides.get(0).distance+bonus;
-										c.rides.push(rides.get(0).number);
-										rides.remove(rides.get(0));
+										c.freeTime=Pnt.GetDistanceToPoint(c.position, tmp2.startPoint)+tmp2.distance;
+										points+=tmp2.distance;
+										if(Pnt.GetDistanceToPoint(c.position, tmp2.startPoint)-1 == tmp2.startTime-currentTime) points+=bonus;
+										c.rides.push(tmp2.number);
+										rides.remove(tmp2);
 									}
 								}
 							}
