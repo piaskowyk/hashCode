@@ -5,7 +5,7 @@ public class Car {
 	public int y = 0;
 	public int freeTour = 0;
 	public boolean free;
-	
+
 	public Car(int x, int y) {
 		this.x = x;
 		this.y = y;
