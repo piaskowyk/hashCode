@@ -20,18 +20,21 @@ public class Car {
 		this.position.y = y;
 	}
 	
-	public int rate(Ride ride, int currentTime, int bonus)
+	public double rate(Ride ride, int currentTime, int bonus, int steps)
 	{
+		
 		int dojazd = Math.max(Pnt.GetDistanceToPoint(this.position, ride.startPoint), ride.startTime-currentTime);
-		int rating = getPoints(ride, currentTime, bonus);
+		if(ride.distance+dojazd+currentTime>steps) return 0.0;
+		if(ride.endTime-currentTime<dojazd+ride.distance) return 0.0;
+		double rating = getPoints(ride, currentTime, bonus);
 		rating/=(dojazd+ride.distance);
 		return rating;
 	}
 	
-	public int getPoints(Ride ride, int currentTime, int bonus)
+	public double getPoints(Ride ride, int currentTime, int bonus)
 	{
-		int points = ride.distance;
-		if(Pnt.GetDistanceToPoint(this.position, ride.startPoint) >= ride.startTime-currentTime) points+=bonus;
+		double points = ride.distance;
+		if(Pnt.GetDistanceToPoint(this.position, ride.startPoint) <= ride.startTime-currentTime) points+=bonus;
 		return points;
 	}
 	

@@ -52,11 +52,11 @@ public class Main
 				{
 					if(actualCar.freeTime<=currentTime)
 					{
-						int maxRate = 0, tempRate;
+						double maxRate = 0.0, tempRate;
 						Ride maxRide=null;
 						for(Ride actualRide: rides)
 						{
-							tempRate= actualCar.rate(actualRide, currentTime, bonus);
+							tempRate= actualCar.rate(actualRide, currentTime, bonus, steps);
 							if(tempRate>maxRate) 
 								{
 									maxRate = tempRate;
