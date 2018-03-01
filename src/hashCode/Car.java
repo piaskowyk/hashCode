@@ -21,6 +21,7 @@ public class Car {
 		int minDist = min.getDistance();
 		int tmp = 0;
 		int how = rides.length;
+		Point point;
 		for(int i=0; i<how; i++) {
 			tmp = rides[i].getDistance();
 			if(tmp < minDist) {
