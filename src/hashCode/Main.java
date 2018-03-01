@@ -2,15 +2,17 @@ package hashCode;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.Vector;
+
 
 public class Main
 {
 
 	public static void main(String[] args) throws FileNotFoundException 
 	{
-		int allRows, allColumns, allCars, allRides, bonus, steps;
+		int allRows, allColumns, allCars, allRides, bonus, steps, points =0;
 		Scanner input = new Scanner(System.in);
 		System.out.print("Podaj nazwe pliku: ");
 		String nazwaPliku = input.next();
@@ -19,7 +21,6 @@ public class Main
 		allColumns = wczytaj.nextInt();
 		allCars= wczytaj.nextInt();
 		allRides = wczytaj.nextInt();
-		//Ride[] rides = new Ride[allRides];
 		Vector<Ride> rides = new Vector<Ride>();
 		Car[] cars = new Car[allCars];
 		for(int i=0; i< allCars; i++)
@@ -59,6 +60,7 @@ public class Main
 								c.freeTime=r.startTime+r.distance;
 								rides.remove(r);
 								c.rides.push(r.number);
+								points+=r.distance+bonus;
 								tmp=true;
 								break;
 							}
@@ -74,6 +76,7 @@ public class Main
 									c.freeTime=r.startTime+r.distance;
 									rides.remove(r);
 									c.rides.push(r.number);
+									points+=r.distance+bonus;
 									break;
 								}
 								
@@ -82,6 +85,7 @@ public class Main
 							{
 								c.freeTime=Pnt.GetDistanceToPoint(c.position, rides.get(0).startPoint)+rides.get(0).distance;
 								rides.remove(rides.get(0));
+								points+=rides.get(0).distance+bonus;
 								c.rides.push(rides.get(0).number);
 							}
 						}
@@ -99,7 +103,25 @@ public class Main
 			}
 
 		}
-		
+		System.out.println(points);
+		wypisz(cars);
 	}
 
+	private static void wypisz(Car[] cars) throws FileNotFoundException
+	{
+		PrintWriter writer = new PrintWriter(new File("output"));
+		int i=0;
+		for (Car c : cars)
+		{
+			writer.print(i);
+			for(Integer number : c.rides)
+			{
+				writer.print(" " + number);
+			}
+			i++;
+			writer.println();
+		}
+		writer.close();
+	}
+	
 }
