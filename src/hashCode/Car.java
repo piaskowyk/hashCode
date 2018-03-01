@@ -70,4 +70,45 @@ public class Car {
 		}
 		return ok;
 	}
+	
+	public Ride minTimeToEnd(Vector<Ride> rides, int currentTime) {
+		int how = rides.size();
+		int k = 0;
+		int minTime = 0;
+		int tmp;
+		Ride min = null;
+		
+		while(min == null && k<how) {//znajdz pierwsz¹ niewykluczon¹ przesy³kê
+			if(!isExcluded(rides.get(k)) && Pnt.GetDistanceToPoint(rides.get(k).startPoint, this.position) + rides.get(k).distance
+					<=
+				rides.get(k).endTime - currentTime) {
+				min = rides.get(k);
+			}
+			k++;
+		}
+		
+		if(min == null) {// jeœli wszystkie przesy³ki s¹ wykluczone return null
+			return null;
+		}
+		
+		minTime = min.endTime;
+		
+		for(int i=0; i<how; i++) {
+			if(isExcluded(rides.get(i))) continue;
+			
+			tmp = rides.get(i).endTime;
+			if(tmp < minTime 
+					&& Pnt.GetDistanceToPoint(rides.get(i).startPoint, this.position) + rides.get(i).distance
+						<=
+					rides.get(i).endTime - currentTime
+					) {
+				minTime = tmp;
+				min = rides.get(i);
+			}
+		}
+		
+		return min;
+		
+	}
+	
 }
