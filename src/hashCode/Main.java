@@ -56,7 +56,7 @@ public class Main
 						{
 							for(Ride r: rides)
 							{
-								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime)
+								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime && Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
 								{
 									c.freeTime=r.startTime+r.distance;
 									rides.remove(r);
@@ -72,7 +72,7 @@ public class Main
 							{
 								for(Ride r: rides)
 								{
-									if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 > r.startTime-currentTime && Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance>r.endTime-currentTime)
+									if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 > r.startTime-currentTime && Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
 									{
 										c.freeTime=r.startTime+r.distance;
 										points+=r.distance+bonus;
@@ -103,7 +103,7 @@ public class Main
 								}
 							}
 							else if(Pnt.GetDistanceToPoint(c.position, best.startPoint)-1 > best.startTime-currentTime &&
-									Pnt.GetDistanceToPoint(c.position, best.startPoint)+best.distance>best.endTime-currentTime )
+									Pnt.GetDistanceToPoint(c.position, best.startPoint)+best.distance<=best.endTime-currentTime )
 							{
 								c.excluded.add(best.number);
 								allCarsBusy = false;
