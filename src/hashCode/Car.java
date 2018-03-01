@@ -1,5 +1,7 @@
 package hashCode;
 
+import java.awt.Point;
+
 public class Car {
 	public int x = 0;
 	public int y = 0;
