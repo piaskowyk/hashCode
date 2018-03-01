@@ -50,7 +50,8 @@ public class Main
 					{
 						if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime)
 						{
-							c.freeTour=r.startTime+r.distance;
+							c.freeTime=r.startTime+r.distance;
+							r.
 						}
 					}
 					
