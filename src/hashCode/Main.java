@@ -6,8 +6,6 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.Vector;
 
-import org.omg.CORBA.FREE_MEM;
-
 
 public class Main
 {
@@ -54,20 +52,31 @@ public class Main
 					{
 						double maxRate = 0.0, tempRate;
 						Ride maxRide=null;
+						Vector<Ride> toRemove = new Vector<Ride>();
 						for(Ride actualRide: rides)
 						{
+							if(actualRide.endTime<currentTime)
+							{
+								toRemove.add(actualRide);
+								continue;
+							}
 							tempRate = actualCar.rate(actualRide, currentTime, bonus, steps);
-							if(maxRide==null || tempRate>maxRate || (tempRate==maxRate && actualRide.endTime-actualRide.distance>maxRide.endTime-maxRide.distance)) 
-								{
-									maxRate = tempRate;
-									maxRide = actualRide;
-								}
+							if(tempRate!=0.0 && (maxRide==null || tempRate>maxRate || (tempRate==maxRate && actualRide.endTime-actualRide.distance<maxRide.endTime-maxRide.distance))) 
+							{
+								maxRate = tempRate;
+								maxRide = actualRide;
+							}
+						}
+						for(Ride remove : toRemove)
+						{
+							rides.remove(remove);
 						}
 						if(maxRide!=null)
 						{
 							points+=actualCar.getPoints(maxRide, currentTime, bonus);
 							actualCar.rides.push(maxRide.number);
-							actualCar.freeTime=Math.max(Pnt.GetDistanceToPoint(actualCar.position, maxRide.startPoint)+maxRide.distance, maxRide.startTime+maxRide.distance);
+							actualCar.position=maxRide.endPoint;
+							actualCar.freeTime=currentTime+actualCar.getTimeToDoRide(maxRide, currentTime);
 							rides.remove(maxRide);
 						}
 					}
