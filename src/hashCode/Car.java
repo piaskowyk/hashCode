@@ -22,11 +22,12 @@ public class Car {
 	
 	public double rate(Ride ride, int currentTime, int bonus, int steps)
 	{
-		int timeToDoRide = getTimeToDoRide(ride, currentTime); 
-		if(timeToDoRide+currentTime>=steps) return 0.0;
-		if(ride.endTime<timeToDoRide+currentTime) return 0.0;
+		
+		int dojazd = Math.max(Pnt.GetDistanceToPoint(this.position, ride.startPoint), ride.startTime-currentTime);
+		if(ride.distance+dojazd+currentTime>steps) return 0.0;
+		if(ride.endTime-currentTime<dojazd+ride.distance) return 0.0;
 		double rating = getPoints(ride, currentTime, bonus);
-		rating/=(timeToDoRide);
+		rating/=(dojazd+ride.distance);
 		return rating;
 	}
 	
@@ -35,21 +36,6 @@ public class Car {
 		double points = ride.distance;
 		if(Pnt.GetDistanceToPoint(this.position, ride.startPoint) <= ride.startTime-currentTime) points+=bonus;
 		return points;
-	}
-	public double getPoints(Ride ride,Ride otherRide, int currentTime, int bonus)
-	{
-		double points = ride.distance;
-		if(Pnt.GetDistanceToPoint(otherRide.endPoint, ride.startPoint) <= ride.startTime-currentTime) points+=bonus;
-		return points;
-	}
-	
-	public int getTimeToDoRide(Ride ride, int currentTime)
-	{
-		return Math.max(Pnt.GetDistanceToPoint(this.position, ride.startPoint), ride.startTime-currentTime)+ride.distance;
-	}
-	public int getTimeToDoRide(Ride ride, Ride otherRide, int currentTime)
-	{
-		return Math.max(Pnt.GetDistanceToPoint(otherRide.endPoint, ride.startPoint), ride.startTime-currentTime)+ride.distance;
 	}
 	
 	public Ride getDistanceToClosestRide(Vector<Ride> rides) {

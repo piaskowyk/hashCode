@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.Vector;
 
+import org.omg.CORBA.FREE_MEM;
+
 
 public class Main
 {
@@ -52,128 +54,20 @@ public class Main
 					{
 						double maxRate = 0.0, tempRate;
 						Ride maxRide=null;
-						Vector<Ride> toRemove = new Vector<Ride>();
 						for(Ride actualRide: rides)
 						{
-							if(actualRide.endTime<currentTime)
-							{
-<<<<<<< Updated upstream
-								toRemove.add(actualRide);
-								continue;
-=======
-								if(Pnt.GetDistanceToPoint(c.position, r.startPoint) == r.startTime-currentTime &&
-										Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
-								{
-									c.position=r.endPoint;
-									c.freeTime=Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance;
-									if(r.startTime+r.distance>c.freeTime) c.freeTime=r.startTime+r.distance;
-									rides.remove(r);
-									c.rides.push(r.number);
-									points+=r.distance+bonus;
-									tmp=true;
-									break;
-								}
->>>>>>> Stashed changes
-							}
 							tempRate = actualCar.rate(actualRide, currentTime, bonus, steps);
-							if(tempRate!=0.0 && (maxRide==null || tempRate>maxRate || (tempRate==maxRate && actualRide.endTime-actualRide.distance<maxRide.endTime-maxRide.distance))) 
-							{
-<<<<<<< Updated upstream
-								maxRate = tempRate;
-								maxRide = actualRide;
-							}
-=======
-								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)+1 == r.startTime-currentTime  &&
-										Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
+							if(maxRide==null || tempRate>maxRate || (tempRate==maxRate && actualRide.endTime-actualRide.distance>maxRide.endTime-maxRide.distance)) 
 								{
-									c.position=r.endPoint;
-									c.freeTime=Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance;
-									if(r.startTime+r.distance>c.freeTime) c.freeTime=r.startTime+r.distance;
-									rides.remove(r);
-									c.rides.push(r.number);
-									points+=r.distance+bonus;
-									tmp=true;
-									break;
+									maxRate = tempRate;
+									maxRide = actualRide;
 								}
-							}
-							if(tmp) continue;
-							for(Ride r: rides)
-							{
-								if(Pnt.GetDistanceToPoint(c.position, r.startPoint)+2 == r.startTime-currentTime &&
-										Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
-								{
-									c.position=r.endPoint;
-									c.freeTime=Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance;
-									if(r.startTime+r.distance>c.freeTime) c.freeTime=r.startTime+r.distance;
-									rides.remove(r);
-									c.rides.push(r.number);
-									points+=r.distance+bonus;
-									tmp=true;
-									break;
-								}
-							}
-							if(tmp) continue;
-							Ride best = c.getDistanceToClosestRide(rides);
-							if(best == null)
-							{
-								for(Ride r: rides)
-								{
-									if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 > r.startTime-currentTime && Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance<=r.endTime-currentTime)
-									{
-										c.position=r.endPoint;
-										c.freeTime=Pnt.GetDistanceToPoint(c.position, r.startPoint)+r.distance;
-										if(r.startTime+r.distance>c.freeTime) c.freeTime=r.startTime+r.distance;
-										points+=r.distance;
-										if(Pnt.GetDistanceToPoint(c.position, r.startPoint)-1 == r.startTime-currentTime) points+=bonus;
-										rides.remove(r);
-										c.rides.push(r.number);
-										break;
-									}
-									
-								}
-								if(c.freeTime<=currentTime && rides.size()>0)
-								{
-									int tmp1=0;
-									Ride tmp2;
-									do
-									{
-										tmp2 = rides.get(tmp1);
-										tmp1++;
-									}
-									while(rides.size()>tmp1 && Pnt.GetDistanceToPoint(c.position, tmp2.startPoint)+tmp2.distance>tmp2.endTime-currentTime
-											&& Pnt.GetDistanceToPoint(c.position, tmp2.startPoint)>= tmp2.startTime-currentTime );
-									if(tmp1<rides.size())
-									{
-										c.position=tmp2.endPoint;
-										c.freeTime=Pnt.GetDistanceToPoint(c.position, tmp2.startPoint)+tmp2.distance;
-										if(tmp2.startTime+tmp2.distance>c.freeTime) c.freeTime=tmp2.startTime+tmp2.distance;
-										points+=tmp2.distance;
-										if(Pnt.GetDistanceToPoint(c.position, tmp2.startPoint)-1 == tmp2.startTime-currentTime) points+=bonus;
-										c.rides.push(tmp2.number);
-										rides.remove(tmp2);
-									}
-								}
-							}
-							else if(Pnt.GetDistanceToPoint(c.position, best.startPoint)-1 > best.startTime-currentTime &&
-									Pnt.GetDistanceToPoint(c.position, best.startPoint)+best.distance<=best.endTime-currentTime )
-							{
-								c.excluded.add(best.number);
-								allCarsBusy = false;
-							}
-							
-							
->>>>>>> Stashed changes
-						}
-						for(Ride remove : toRemove)
-						{
-							rides.remove(remove);
 						}
 						if(maxRide!=null)
 						{
 							points+=actualCar.getPoints(maxRide, currentTime, bonus);
 							actualCar.rides.push(maxRide.number);
-							actualCar.position=maxRide.endPoint;
-							actualCar.freeTime=currentTime+actualCar.getTimeToDoRide(maxRide, currentTime);
+							actualCar.freeTime=Math.max(Pnt.GetDistanceToPoint(actualCar.position, maxRide.startPoint)+maxRide.distance, maxRide.startTime+maxRide.distance);
 							rides.remove(maxRide);
 						}
 					}
